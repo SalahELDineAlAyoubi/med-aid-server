@@ -50,7 +50,7 @@ if (!error){
     email,
     password,
   });
-  if (member) res.send({ state: "done",ok : true ,_id : member._id ,name :member.name });
+  if (member) res.send({ state: "done",ok : true ,_id : member._id ,name :member.name, phone :member.phone,email:member.email ,password:member.password });
   else res.send({ state: "Eroor data", ok: false });
 });
  
