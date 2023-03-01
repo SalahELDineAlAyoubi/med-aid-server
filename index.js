@@ -34,10 +34,13 @@ const app = express();
   const UserRoute = require("./Routes/UserRoute.js"); 
   const PostRoute = require("./Routes/PostRoute.js"); 
   const UploadRoute = require("./Routes/UploadRoute.js"); 
-
+const ChatRoute = require("./Routes/ChatRoute");
+const MessageRoute = require("./Routes/MessageRoute"); 
     // Usage of Routes
 
   app.use('/auth',AuthRoute)
   app.use('/user',UserRoute)
     app.use("/posts", PostRoute);
   app.use("/upload", UploadRoute);
+   app.use("/chat", ChatRoute);
+   app.use("/message", MessageRoute);
