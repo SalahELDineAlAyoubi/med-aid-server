@@ -5,6 +5,15 @@ const jwt = require("jsonwebtoken");
 
 //get a User
 
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await UserModel.find();
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
 exports.getUser  = async(req,res) => { 
 
 const id  = req.params.id; 
