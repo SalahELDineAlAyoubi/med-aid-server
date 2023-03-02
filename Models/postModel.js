@@ -4,6 +4,8 @@ const postSchema = mongoose.Schema(
   {
     userId: { type: String, required: true },
     name: { type: String, required: true },
+    dosage: { type: String, required: true },
+    quantity: { type: String, required: true },
     opendate: { type: String, required: true },
     expirydate: { type: String, required: true },
     image: { type: String, required: true },

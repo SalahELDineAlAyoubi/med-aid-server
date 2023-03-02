@@ -36,7 +36,9 @@ exports.getPosts = async (req, res) => {
   
   try {
     const posts = await PostModel.find();
-    res.status(200).json(posts);
+    res.status(200).json(posts.sort((a, b) => {
+          return b.createdAt - a.createdAt; //latest posts  will apear first
+        })  )
   } catch (error) {
     res.status(500).json(error);
   }
