@@ -35,9 +35,9 @@ exports.getPost = async (req, res) => {
 exports.getPosts = async (req, res) => {
   
   try {
-    const posts = await PostModel.find();
+    const posts = await PostModel.find({isVisible:true});
     res.status(200).json(posts.sort((a, b) => {
-          return b.createdAt - a.createdAt; //latest posts  will apear first
+          return b.updatedAt - a.updatedAt; //latest posts  will apear first
         })  )
   } catch (error) {
     res.status(500).json(error);
@@ -52,7 +52,10 @@ exports.updatePost = async (req, res) => {
   try {
     const post = await PostModel.findById(postId);
     if (post.userId === userId) {
+ //req.body.updatedAt = Date.now();
+ // req.body.createdAt = post.createdAt; 
       await post.updateOne({ $set: req.body });
+      
       res.status(200).json("Post Updated");
     } else {
       res.status(403).json("Action forbidden");
@@ -71,7 +74,7 @@ exports.deletePost = async (req, res) => {
   try {
     const post = await PostModel.findById(id);
     if (post.userId === userId) {
-      await post.deleteOne();
+      await post.updateOne({ $set: {"isVisible":false} });
       res.status(200).json("Post deleted successfully");
     } else {
       res.status(403).json("Action forbidden");
