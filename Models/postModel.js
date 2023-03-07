@@ -16,9 +16,10 @@ const postSchema = mongoose.Schema(
       default: true,
     },
     taken: {
-      type: Boolean,
-      default: false,
+      type: Number,
+      default: 0,
     },
+    userIdBook: String,
   },
   {
     timestamps: true,

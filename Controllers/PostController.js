@@ -33,11 +33,12 @@ exports.getPost = async (req, res) => {
  // Get all post
 
 exports.getPosts = async (req, res) => {
-  
+ 
+
   try {
     const posts = await PostModel.find({isVisible:true});
     res.status(200).json(posts.sort((a, b) => {
-          return b.updatedAt - a.updatedAt; //latest posts  will apear first
+          return b.createdAt - a.createdAt; //latest posts  will apear first
         })  )
   } catch (error) {
     res.status(500).json(error);
@@ -102,6 +103,26 @@ exports.getmyPosts = async (req, res) => {
         })
     );
   } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+
+
+
+exports.bookMed = async (req, res) => {
+  const itemId = req.params.id;
+  const { userId } = req.body;
+
+  try { 
+ 
+        const post = await PostModel.findById(itemId);
+    
+          await post.updateOne({ $set: { taken: 1, userIdBook: userId } });
+       
+      res.status(200).json("Medecine Booked successfully");
+ 
+   } catch (error) {
     res.status(500).json(error);
   }
 };
