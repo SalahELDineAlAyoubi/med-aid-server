@@ -20,7 +20,9 @@ const postSchema = mongoose.Schema(
       default: 0,
     },
     userIdBook: String,
+    takenUntil: Date,
   },
+
   {
     timestamps: true,
   }
