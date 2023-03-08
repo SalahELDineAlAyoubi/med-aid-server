@@ -65,8 +65,37 @@ exports.updatePost = async (req, res) => {
     res.status(500).json(error);
   }
 };
+//book Medecine 
+exports.bookMed = async (req, res) => {
+  const itemId = req.params.id;
+  const { userId } = req.body;
 
+  try {
+    const post = await PostModel.findById(itemId);
 
+    await post.updateOne({ $set: { taken: 1, userIdBook: userId } });
+
+    res.status(200).json("Medecine Booked successfully");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+//unbook Medecine 
+exports.unbookMed = async (req, res) => {
+  const itemId = req.params.id;
+  const { userId } = req.body;
+
+  try {
+    const post = await PostModel.findById(itemId);
+
+    //await post.updateOne({ $set: { taken: 1, userIdBook: userId } });
+await post.updateOne(  { $set: { taken: 0 }, $unset: { userIdBook: "" } });
+
+    res.status(200).json("Medecine UnBooked successfully");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 // Delete a post
 exports.deletePost = async (req, res) => {
   const id = req.params.id;
@@ -110,19 +139,3 @@ exports.getmyPosts = async (req, res) => {
 
 
 
-exports.bookMed = async (req, res) => {
-  const itemId = req.params.id;
-  const { userId } = req.body;
-
-  try { 
- 
-        const post = await PostModel.findById(itemId);
-    
-          await post.updateOne({ $set: { taken: 1, userIdBook: userId } });
-       
-      res.status(200).json("Medecine Booked successfully");
- 
-   } catch (error) {
-    res.status(500).json(error);
-  }
-};
