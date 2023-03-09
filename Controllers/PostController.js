@@ -214,6 +214,37 @@ exports.getmyPosts = async (req, res) => {
   }
 };
 
+//Search posts 
 
 
+exports.searchPosts = async (req, res) => {
+  const { searchTermMed } = req.body;
 
+  try {
+    const posts = await PostModel.find({
+      $or: [
+        { name: { $regex: searchTermMed, $options: "i" } },
+        { location: { $regex: searchTermMed, $options: "i" } },
+      ],
+    });
+    /*const posts = await PostModel.find({ isVisible: true });*/
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+/*
+exports.searchPosts = async (req, res) => {
+  try {
+    const posts = await PostModel.find({ isVisible: true });
+    res.status(200).json(
+      posts.sort((a, b) => {
+        return b.createdAt - a.createdAt; //latest posts  will apear first
+      })
+    );
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};*/
