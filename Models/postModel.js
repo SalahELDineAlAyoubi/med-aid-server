@@ -11,6 +11,10 @@ const postSchema = mongoose.Schema(
     image: { type: String, required: true },
     location: String,
     phone: String,
+    saved: {
+      type: Boolean,
+      default: true,
+    },
     isVisible: {
       type: Boolean,
       default: true,

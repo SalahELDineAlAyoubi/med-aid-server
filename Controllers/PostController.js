@@ -44,6 +44,25 @@ exports.getPosts = async (req, res) => {
     res.status(500).json(error);
   }
 };
+//get my booked medecines
+exports.getBookedPost = async (req, res) => {
+   const { userId } = req.body;
+
+  try {
+    const posts = await PostModel.find({
+      isVisible: true,
+      userId: userId,
+      userIdBook: { $ne: null },
+    });
+    res.status(200).json(
+      posts.sort((a, b) => {
+        return b.createdAt - a.createdAt; //latest posts  will apear first
+      })
+    );
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 // Update a post
 exports.updatePost = async (req, res) => {
@@ -65,6 +84,7 @@ exports.updatePost = async (req, res) => {
     res.status(500).json(error);
   }
 };
+ 
 //book Medecine 
 exports.bookMed = async (req, res) => {
   const itemId = req.params.id;
@@ -226,9 +246,14 @@ exports.searchPosts = async (req, res) => {
         { name: { $regex: searchTermMed, $options: "i" } },
         { location: { $regex: searchTermMed, $options: "i" } },
       ],
+       isVisible :true ,
     });
     /*const posts = await PostModel.find({ isVisible: true });*/
-    res.status(200).json(posts);
+    res.status(200).json(
+      posts.sort((a, b) => {
+        return b.createdAt - a.createdAt;  
+      })
+    );
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
