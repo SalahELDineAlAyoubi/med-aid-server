@@ -225,23 +225,7 @@ exports.searchPosts = async (req, res) => {
   }
 };
 
-/*
-exports.searchPosts = async (req, res) => {
-  try {
-    const posts = await PostModel.find({ isVisible: true });
-    res.status(200).json(
-      posts.sort((a, b) => {
-        return b.createdAt - a.createdAt; //latest posts  will apear first
-      })
-    );
-  } catch (error) {
-    res.status(500).json(error);
-  }
-};*/
-
-
-
-
+  
 //Accept by donner 
  exports.acceptRequest = async (req, res) => {
    const itemId = req.params.id;
