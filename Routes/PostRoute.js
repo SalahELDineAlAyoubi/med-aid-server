@@ -11,6 +11,7 @@ const {
   bookMed,
   searchPosts,
   getBookedPost,
+  acceptRequest,
 } = require("../Controllers/PostController");
 
 const router = express.Router();
@@ -25,6 +26,7 @@ router.delete("/:id", deletePost);
  router.get("/:id/myposts", getmyPosts);
  router.put("/book/:id", bookMed);
  router.put("/unbook/:id", unbookMed);
+ router.put("/accept/:id", acceptRequest);
  router.post("/mybookepost/", getBookedPost);
 
 

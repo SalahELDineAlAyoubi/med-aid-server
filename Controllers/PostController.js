@@ -52,6 +52,7 @@ exports.getBookedPost = async (req, res) => {
     const posts = await PostModel.find({
       isVisible: true,
       userId: userId,
+      taken: { $ne: 2 },
       userIdBook: { $ne: null },
     });
     res.status(200).json(
@@ -138,43 +139,7 @@ exports.bookMed = async (req, res) => {
     res.status(500).json(error);
   }
 };
-// exports.bookMed = async (req, res) => {
-//   const itemId = req.params.id;
-//   const { userId } = req.body;
-
-//   try {
-//     const post = await PostModel.findById(itemId);
-
-//     // Set taken status to 1 and userIdBook to userId
-//     await post.updateOne({
-//       $set: {
-//         taken: 1,
-//         userIdBook: userId,
-//         takenUntil: Date.now() + 24 * 60 * 60 * 1000,
-//       },
-//     });
-
-//     // Delay setting taken status back to 0 for 24 hours
-//     setTimeout(async () => {
-//       try {
-//         const updatedPost = await PostModel.findByIdAndUpdate(
-//           itemId,
-//           { taken: 0, userIdBook: null, takenUntil: null },
-//           { new: true }
-//         );
-//         console.log(`Book with ID ${itemId} marked as available.`);
-//       } catch (error) {
-//         console.error(
-//           `Error marking book with ID ${itemId} as available: ${error.message}`
-//         );
-//       }
-//     }, 24 * 60 * 60 * 1000);
-
-//     res.status(200).json("Medicine booked successfully");
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// };
+ 
 //unbook Medecine 
 exports.unbookMed = async (req, res) => {
   const itemId = req.params.id;
@@ -273,3 +238,45 @@ exports.searchPosts = async (req, res) => {
     res.status(500).json(error);
   }
 };*/
+
+
+
+
+//Accept by donner 
+ exports.acceptRequest = async (req, res) => {
+   const itemId = req.params.id;
+   const { note } = req.body;
+
+   try {
+     const post = await PostModel.findById(itemId);
+
+     // Set taken status to 1 and userIdBook to userId
+     await post.updateOne({
+       $set: {
+         taken: 2,
+ note:note,
+         takenUntil: Date.now() + 5 * 24 * 60 * 60 * 1000,
+       },
+     });
+
+     // Set taken status back to 0 after 10 seconds
+     setTimeout(async () => {
+       try {
+         const updatedPost = await PostModel.findByIdAndUpdate(
+           itemId,
+           { taken: 0, userIdBook: null, takenUntil: null, note:null },
+           { new: true }
+         );
+         console.log(`Book with ID ${itemId} marked as available.`);
+       } catch (error) {
+         console.error(
+           `Error marking accept with ID ${itemId} as available: ${error.message}`
+         );
+       }
+     }, 5*24 * 60 * 60 * 1000); // 10 seconds in milliseconds
+
+     res.status(200).json("Medicine booked successfully");
+   } catch (error) {
+     res.status(500).json(error);
+   }
+ };

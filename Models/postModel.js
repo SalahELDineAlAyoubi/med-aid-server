@@ -24,6 +24,7 @@ const postSchema = mongoose.Schema(
       default: 0,
     },
     userIdBook: String,
+    note: String,
     takenUntil: Date,
   },
 
